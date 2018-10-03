@@ -9,13 +9,12 @@ import { resolve } from "path";
 
 const modules = [];
 
-let markup = new Promise((resolve, reject) => {
-  const name = "Text";
-  const html = renderToString(<App data={name} />);
+let markup = data => {
+  const html = renderToString(<App data={data} />);
 
   const result = `<!doctype html><html>
       <head>
-        <script>window.__INITIAL_DATA__ = ${JSON.stringify(name)}</script>    
+        <script>window.__INITIAL_DATA__ = ${JSON.stringify(data)}</script>    
       </head>
       <body>
           <div id="app">${html}</div>                      
@@ -25,7 +24,8 @@ let markup = new Promise((resolve, reject) => {
       </body>
       </html>
       `;
-  resolve(result);
-});
+
+  return result;
+};
 
 export default markup;
