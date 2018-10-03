@@ -18,8 +18,7 @@ var browserConfig = {
   plugins: [
     new webpack.DefinePlugin({
       __isBrowser__: "true"
-    }),
-    new BundleAnalyzerPlugin()
+    })
   ]
 };
 
@@ -27,7 +26,6 @@ var serverConfig = {
   target: "node",
   entry: "./server/index.js",
   target: "node",
-  externals: [nodeExternals()],
   output: {
     path: path.resolve(__dirname, "build/server"),
     filename: "server.js",
