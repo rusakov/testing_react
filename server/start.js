@@ -6,11 +6,18 @@ import serialize from "serialize-javascript";
 import App from "../views";
 import { fetchPopularRepos } from "../api/user";
 import { resolve } from "path";
+import { StaticRouter, matchPath } from "react-router-dom";
 
 const modules = [];
 
-let markup = data => {
-  const html = renderToString(<App data={data} />);
+let markup = (data, req) => {
+  const context = { data };
+
+  const html = renderToString(
+    <StaticRouter location={req.url} context={context}>
+      <App />
+    </StaticRouter>
+  );
 
   const result = `<!doctype html><html>
       <head>

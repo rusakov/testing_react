@@ -8,11 +8,9 @@ export function fetchPopularRepos(language = "all") {
   return fetch(encodedURI)
     .then(data => data.json())
     .then(repos => {
-      console.log(repos.items);
       return repos.items;
     })
     .catch(error => {
-      console.warn(error);
       return null;
     });
 }

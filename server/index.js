@@ -31,7 +31,7 @@ app.get("*", (req, res, next) => {
 
   promise
     .then(data => {
-      res.send(markup(data));
+      res.send(markup(data, req));
     })
     .catch(next);
 });

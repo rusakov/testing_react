@@ -1,8 +1,56 @@
 import React, { Component } from "react";
 
 class Grid extends Component {
+  constructor(props) {
+    super(props);
+
+    let repos;
+    if (__isBrowser__) {
+      repos = window.__INITIAL_DATA__;
+    } else {
+      repos = this.props.staticContext.data;
+    }
+
+    this.state = {
+      repos,
+      loading: repos ? false : true
+    };
+  }
+
+  fetchRepos = lang => {
+    this.setState(() => ({
+      loading: true
+    }));
+
+    this.props.fetchInitialData(lang).then(repos =>
+      this.setState(() => ({
+        repos,
+        loading: false
+      }))
+    );
+  };
+
+  componentDidMount() {
+    if (!this.state.repos) {
+      this.fetchRepos(this.props.match.params.id);
+
+      fetch(
+        "https://m.mamba.ru/api/ratings/v2/voting/photos?ageFrom=18&ageTo=25&gender=F&limit=30&location=3159_4312_4400_0"
+      );
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.match.params.id !== this.props.match.params.id) {
+      this.fetchRepos(this.props.match.params.id);
+    }
+  }
+
   render() {
-    const repos = this.props.data;
+    const { loading, repos } = this.state;
+
+    if (loading === true) {
+      return <p>LOADING</p>;
+    }
 
     return (
       <ul style={{ display: "flex", flexWrap: "wrap" }}>
