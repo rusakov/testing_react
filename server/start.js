@@ -6,16 +6,26 @@ import serialize from "serialize-javascript";
 import App from "../views";
 import { fetchPopularRepos } from "../api/user";
 import { resolve } from "path";
+import { StaticRouter } from "react-router-dom";
 
 const modules = [];
 
-let markup = new Promise((resolve, reject) => {
+let markup = req => {
   const name = "Text";
-  const html = renderToString(<App data={name} />);
+  let context = {};
+
+  console.log(req.url);
+  const html = renderToString(
+    <StaticRouter location={req.url} context={context}>
+      <App data={name} />
+    </StaticRouter>
+  );
 
   const result = `<!doctype html><html>
       <head>
-        <script>window.__INITIAL_DATA__ = ${JSON.stringify(name)}</script>    
+        <script>window.__INITIAL_DATA__ = ${JSON.stringify(
+          context
+        )}</script>    
       </head>
       <body>
           <div id="app">${html}</div>                      
@@ -25,7 +35,8 @@ let markup = new Promise((resolve, reject) => {
       </body>
       </html>
       `;
-  resolve(result);
-});
+
+  return result;
+};
 
 export default markup;

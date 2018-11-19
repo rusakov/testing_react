@@ -22,12 +22,7 @@ var app = express();
 app.use(express.static("build"));
 
 app.get("*", (req, res, next) => {
-  markup.then(
-    function(data) {
-      res.send(data);
-    },
-    function(error) {}
-  );
+  res.send(markup(req));
 });
 
 app.listen(PORT, () => {});
